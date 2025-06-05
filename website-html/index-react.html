@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React TypeScript Browser IDE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        .header {
+            background: #2d2d30;
+            padding: 10px 20px;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .react-badge {
+            background: #61dafb;
+            color: #20232a;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #1177bb;
+        }
+
+        .btn.react-run {
+            background: #61dafb;
+            color: #20232a;
+        }
+
+        .btn.react-run:hover {
+            background: #21d4fd;
+        }
+
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #252526;
+            border-right: 1px solid #3e3e42;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 10px;
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .file-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-item:hover {
+            background: #2a2d2e;
+        }
+
+        .file-item.active {
+            background: #0e639c;
+        }
+
+        .file-actions {
+            padding: 10px;
+            border-top: 1px solid #3e3e42;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs {
+            display: flex;
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+            min-height: 35px;
+        }
+
+        .tab {
+            padding: 8px 20px;
+            background: #2d2d30;
+            border-right: 1px solid #3e3e42;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab.active {
+            background: #1e1e1e;
+        }
+
+        .tab:hover:not(.active) {
+            background: #2a2d2e;
+        }
+
+        .tab-close {
+            color: #999;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .tab-close:hover {
+            color: #fff;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+        }
+
+        .editor {
+            flex: 2;
+            min-height: 0;
+        }
+
+        .output-panel {
+            flex: 1;
+            border-left: 1px solid #3e3e42;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .output-tabs {
+            display: flex;
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .output-tab {
+            padding: 8px 16px;
+            background: #2d2d30;
+            border-right: 1px solid #3e3e42;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .output-tab.active {
+            background: #1e1e1e;
+            color: #61dafb;
+        }
+
+        .output-content {
+            flex: 1;
+            padding: 10px;
+            background: #1e1e1e;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        .react-preview {
+            flex: 1;
+            background: #ffffff;
+            padding: 20px;
+            overflow-y: auto;
+            color: #000000;
+        }
+
+        .error {
+            color: #f48771;
+        }
+
+        .success {
+            color: #4ec9b0;
+        }
+
+        .input-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .dialog-content {
+            background: #2d2d30;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #3e3e42;
+            min-width: 300px;
+        }
+
+        .dialog-content h3 {
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .dialog-content input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+            color: #d4d4d4;
+            border-radius: 4px;
+        }
+
+        .dialog-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>React TypeScript Browser IDE</h1>
+            <span class="react-badge">React + TS</span>
+        </div>
+        <div class="toolbar">
+            <button class="btn react-run" onclick="runReactCode()">⚛ Run React</button>
+            <button class="btn" onclick="runCode()">▶ Run TS</button>
+            <button class="btn" onclick="showNewFileDialog()">+ New File</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-header">Files</div>
+            <div class="file-list" id="fileList"></div>
+            <div class="file-actions">
+                <button class="btn" style="width: 100%;" onclick="showNewFileDialog()">Add File</button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="tabs" id="tabs"></div>
+            <div class="editor-container">
+                <div class="editor" id="editor"></div>
+                <div class="output-panel">
+                    <div class="output-tabs">
+                        <div class="output-tab active" onclick="switchOutputTab('console')">Console</div>
+                        <div class="output-tab" onclick="switchOutputTab('preview')">React Preview</div>
+                    </div>
+                    <div class="output-content" id="consoleOutput"></div>
+                    <div class="react-preview hidden" id="reactPreview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New File Dialog -->
+    <div class="input-dialog hidden" id="newFileDialog">
+        <div class="dialog-content">
+            <h3>New File</h3>
+            <input type="text" id="newFileName" placeholder="Enter filename (e.g., App.tsx)" />
+            <div class="dialog-buttons">
+                <button class="btn" onclick="hideNewFileDialog()">Cancel</button>
+                <button class="btn" onclick="createNewFile()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- React, ReactDOM, and Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Monaco Editor -->
+    <script src="https://unpkg.com/monaco-editor@0.44.0/min/vs/loader.js"></script>
+    <script src="https://unpkg.com/typescript@5.2.2/lib/typescript.js"></script>
+    
+    <script>
+        let editor;
+        let files = {};
+        let activeFile = null;
+        let openTabs = [];
+        let currentOutputTab = 'console';
+
+        // React types definitions
+        const reactTypeDefs = `
+        declare module 'react' {
+          interface Component<P = {}, S = {}> {
+            props: P;
+            state: S;
+            setState(state: Partial<S>): void;
+            render(): JSX.Element;
+          }
+          interface FunctionComponent<P = {}> {
+            (props: P): JSX.Element;
+          }
+          type FC<P = {}> = FunctionComponent<P>;
+          function useState<T>(initialState: T): [T, (newState: T) => void];
+          function useEffect(effect: () => void | (() => void), deps?: any[]): void;
+          function createElement(type: any, props?: any, ...children: any[]): JSX.Element;
+          const Component: any;
+          const PureComponent: any;
+          const Fragment: any;
+          export { Component, PureComponent, Fragment, FunctionComponent, FC, useState, useEffect, createElement };
+          export default React;
+        }
+        
+        declare namespace React {
+          interface Component<P = {}, S = {}> {
+            props: P;
+            state: S;
+            setState(state: Partial<S>): void;
+            render(): JSX.Element;
+          }
+          interface FunctionComponent<P = {}> {
+            (props: P): JSX.Element;
+          }
+          type FC<P = {}> = FunctionComponent<P>;
+          function useState<T>(initialState: T): [T, (newState: T) => void];
+          function useEffect(effect: () => void | (() => void), deps?: any[]): void;
+          function useCallback<T extends (...args: any[]) => any>(callback: T, deps: any[]): T;
+          function useMemo<T>(factory: () => T, deps: any[]): T;
+          function useRef<T>(initialValue: T): { current: T };
+          function createElement(type: any, props?: any, ...children: any[]): JSX.Element;
+          const Component: any;
+          const PureComponent: any;
+          const Fragment: any;
+        }
+        
+        declare namespace JSX {
+          interface Element {}
+          interface IntrinsicElements {
+            div: any;
+            span: any;
+            h1: any;
+            h2: any;
+            h3: any;
+            p: any;
+            button: any;
+            input: any;
+            form: any;
+            ul: any;
+            li: any;
+            img: any;
+            a: any;
+            section: any;
+            article: any;
+            header: any;
+            footer: any;
+            nav: any;
+            main: any;
+            textarea: any;
+            select: any;
+            option: any;
+            label: any;
+            [elemName: string]: any;
+          }
+        }
+        
+        declare var ReactDOM: {
+          render(element: JSX.Element, container: Element): void;
+          createRoot(container: Element): {
+            render(element: JSX.Element): void;
+          };
+        };
+        `;
+
+        // Initialize the application
+        require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@0.44.0/min/vs' }});
+        
+        require(['vs/editor/editor.main'], function () {
+            // Configure TypeScript compiler options for React
+            monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+                target: monaco.languages.typescript.ScriptTarget.ES2020,
+                allowNonTsExtensions: true,
+                moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+                module: monaco.languages.typescript.ModuleKind.CommonJS,
+                noEmit: true,
+                esModuleInterop: true,
+                allowSyntheticDefaultImports: true,
+                jsx: monaco.languages.typescript.JsxEmit.React,
+                allowJs: true,
+                typeRoots: ["node_modules/@types"],
+                strict: false,
+                skipLibCheck: true
+            });
+
+            // Add React type definitions
+            monaco.languages.typescript.typescriptDefaults.addExtraLib(reactTypeDefs, 'ts:react.d.ts');
+            
+            // Add console definitions
+            monaco.languages.typescript.typescriptDefaults.addExtraLib(
+                `declare var console: { log(message?: any, ...optionalParams: any[]): void; error(message?: any, ...optionalParams: any[]): void; warn(message?: any, ...optionalParams: any[]): void; };`,
+                'ts:console.d.ts'
+            );
+
+            // Create the editor
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                value: '// Welcome to React TypeScript Browser IDE!\n// Create a new file to get started.',
+                language: 'typescript',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                fontSize: 14,
+                tabSize: 2,
+                insertSpaces: true,
+                wordWrap: 'on',
+                minimap: { enabled: false }
+            });
+
+            // Create a default React component file
+            createFile('App.tsx', `import React, { useState } from 'react';
+
+interface CounterProps {
+  initialCount?: number;
+}
+
+const Counter: React.FC<CounterProps> = ({ initialCount = 0 }) => {
+  const [count, setCount] = useState<number>(initialCount);
+
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>React TypeScript Counter</h1>
+      <p style={{ fontSize: '24px', margin: '20px 0' }}>Count: {count}</p>
+      <div>
+        <button 
+          onClick={() => setCount(count - 1)}
+          style={{ margin: '0 10px', padding: '10px 20px', fontSize: '16px' }}
+        >
+          -
+        </button>
+        <button 
+          onClick={() => setCount(count + 1)}
+          style={{ margin: '0 10px', padding: '10px 20px', fontSize: '16px' }}
+        >
+          +
+        </button>
+      </div>
+      <button 
+        onClick={() => setCount(0)}
+        style={{ margin: '20px 10px', padding: '10px 20px', fontSize: '16px', backgroundColor: '#ff6b6b', color: 'white', border: 'none', borderRadius: '4px' }}
+      >
+        Reset
+      </button>
+    </div>
+  );
+};
+
+const App = () => <Counter initialCount={5} />;
+
+export default App;`);
+            
+            updateUI();
+
+            // Listen for editor changes
+            editor.onDidChangeModelContent(() => {
+                if (activeFile) {
+                    files[activeFile].content = editor.getValue();
+                }
+            });
+        });
+
+        function createFile(filename, content = '') {
+            if (files[filename]) {
+                alert('File already exists!');
+                return;
+            }
+
+            files[filename] = {
+                name: filename,
+                content: content,
+                model: null
+            };
+
+            // Determine language based on extension
+            let language = 'typescript';
+            if (filename.endsWith('.tsx') || filename.endsWith('.jsx')) {
+                language = 'typescript';
+            } else if (filename.endsWith('.js')) {
+                language = 'javascript';
+            }
+
+            // Create Monaco model for the file
+            files[filename].model = monaco.editor.createModel(
+                content,
+                language,
+                monaco.Uri.file(filename)
+            );
+
+            updateFileList();
+            openFile(filename);
+        }
+
+        function openFile(filename) {
+            if (!files[filename]) return;
+
+            activeFile = filename;
+            
+            // Add to open tabs if not already open
+            if (!openTabs.includes(filename)) {
+                openTabs.push(filename);
+            }
+
+            // Set the model in the editor
+            editor.setModel(files[filename].model);
+            
+            updateUI();
+        }
+
+        function closeTab(filename) {
+            const index = openTabs.indexOf(filename);
+            if (index > -1) {
+                openTabs.splice(index, 1);
+            }
+
+            if (activeFile === filename) {
+                if (openTabs.length > 0) {
+                    openFile(openTabs[openTabs.length - 1]);
+                } else {
+                    activeFile = null;
+                    editor.setModel(null);
+                }
+            }
+
+            updateUI();
+        }
+
+        function deleteFile(filename) {
+            if (confirm(`Delete ${filename}?`)) {
+                closeTab(filename);
+                if (files[filename].model) {
+                    files[filename].model.dispose();
+                }
+                delete files[filename];
+                updateFileList();
+            }
+        }
+
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+
+            Object.keys(files).forEach(filename => {
+                const fileItem = document.createElement('div');
+                fileItem.className = `file-item ${activeFile === filename ? 'active' : ''}`;
+                fileItem.innerHTML = `
+                    <span onclick="openFile('${filename}')">${filename}</span>
+                    <span class="tab-close" onclick="deleteFile('${filename}')" title="Delete file">×</span>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        function updateTabs() {
+            const tabsContainer = document.getElementById('tabs');
+            tabsContainer.innerHTML = '';
+
+            openTabs.forEach(filename => {
+                const tab = document.createElement('div');
+                tab.className = `tab ${activeFile === filename ? 'active' : ''}`;
+                const icon = filename.endsWith('.tsx') ? '⚛' : filename.endsWith('.ts') ? 'TS' : 'JS';
+                tab.innerHTML = `
+                    <span onclick="openFile('${filename}')">${icon} ${filename}</span>
+                    <span class="tab-close" onclick="closeTab('${filename}')" title="Close tab">×</span>
+                `;
+                tabsContainer.appendChild(tab);
+            });
+        }
+
+        function updateUI() {
+            updateFileList();
+            updateTabs();
+        }
+
+        function showNewFileDialog() {
+            document.getElementById('newFileDialog').classList.remove('hidden');
+            document.getElementById('newFileName').focus();
+        }
+
+        function hideNewFileDialog() {
+            document.getElementById('newFileDialog').classList.add('hidden');
+            document.getElementById('newFileName').value = '';
+        }
+
+        function createNewFile() {
+            const filename = document.getElementById('newFileName').value.trim();
+            if (!filename) {
+                alert('Please enter a filename');
+                return;
+            }
+
+            if (!filename.match(/\\.(tsx?|jsx?)$/)) {
+                alert('Please use .ts, .tsx, .js, or .jsx extension');
+                return;
+            }
+
+            const template = filename.endsWith('.tsx') ? 
+                `import React from 'react';
+
+const ComponentName: React.FC = () => {
+  return (
+    <div>
+      <h1>Hello from React TypeScript!</h1>
+    </div>
+  );
+};
+
+const App = () => <ComponentName />;
+
+export default App;` : 
+                '// New TypeScript file\n\n';
+
+            createFile(filename, template);
+            hideNewFileDialog();
+        }
+
+        function runCode() {
+            if (!activeFile) {
+                alert('No file selected');
+                return;
+            }
+
+            const output = document.getElementById('consoleOutput');
+            output.innerHTML = '';
+            switchOutputTab('console');
+
+            try {
+                const code = editor.getValue();
+
+                // Compile TypeScript to JavaScript
+                const result = ts.transpile(code, {
+                    target: ts.ScriptTarget.ES2020,
+                    module: ts.ModuleKind.None,
+                    removeComments: false,
+                    jsx: ts.JsxEmit.React
+                });
+
+                // Capture console output
+                const originalLog = console.log;
+                const originalError = console.error;
+                const logs = [];
+                
+                console.log = (...args) => {
+                    logs.push({ type: 'log', args: args.map(arg => 
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' ') });
+                };
+                
+                console.error = (...args) => {
+                    logs.push({ type: 'error', args: args.map(arg => 
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' ') });
+                };
+
+                try {
+                    // Execute the compiled JavaScript
+                    eval(result);
+                    
+                    // Display output
+                    if (logs.length > 0) {
+                        output.innerHTML = '<div class="success">Output:</div>' + 
+                            logs.map(log => `<div class="${log.type === 'error' ? 'error' : ''}">${escapeHtml(log.args)}</div>`).join('');
+                    } else {
+                        output.innerHTML = '<div class="success">Code executed successfully (no output)</div>';
+                    }
+                } catch (runtimeError) {
+                    output.innerHTML = `<div class="error">Runtime Error:</div><div>${escapeHtml(runtimeError.message)}</div>`;
+                } finally {
+                    console.log = originalLog;
+                    console.error = originalError;
+                }
+
+            } catch (error) {
+                output.innerHTML = `<div class="error">Compilation Error:</div><div>${escapeHtml(error.message)}</div>`;
+            }
+        }
+
+        function runReactCode() {
+            if (!activeFile) {
+                alert('No file selected');
+                return;
+            }
+
+            const output = document.getElementById('consoleOutput');
+            const preview = document.getElementById('reactPreview');
+            output.innerHTML = '';
+            preview.innerHTML = '';
+            switchOutputTab('preview');
+
+            try {
+                let code = editor.getValue();
+                
+                // Replace import statements for browser environment
+                code = code.replace(/import\s+React(?:\s*,\s*\{[^}]*\})?\s+from\s+['"]react['"];?/g, '');
+                code = code.replace(/import\s+\{([^}]+)\}\s+from\s+['"]react['"];?/g, (match, imports) => {
+                    // Extract specific imports like useState, useEffect
+                    const cleanImports = imports.split(',').map(imp => imp.trim());
+                    return `const { ${cleanImports.join(', ')} } = React;`;
+                });
+
+                // Handle export statements - convert to variable assignments
+                code = code.replace(/export\s+default\s+([^;]+);?/g, 'window.DefaultExport = $1;');
+                code = code.replace(/export\s+\{([^}]+)\}/g, (match, exports) => {
+                    const exportList = exports.split(',').map(exp => exp.trim());
+                    return exportList.map(exp => `window.${exp} = ${exp};`).join('\n');
+                });
+
+                // Transform JSX using Babel with proper filename
+                const transformed = Babel.transform(code, {
+                    filename: activeFile || 'component.tsx',
+                    presets: [
+                        ['react', { runtime: 'classic' }],
+                        ['typescript', { allExtensions: true, isTSX: true }]
+                    ],
+                    plugins: [
+                        ['transform-typescript', { isTSX: true, allExtensions: true }]
+                    ]
+                }).code;
+
+                // Create a container for React
+                const container = document.createElement('div');
+                preview.appendChild(container);
+
+                // Capture console output
+                const originalLog = console.log;
+                const originalError = console.error;
+                const logs = [];
+                
+                console.log = (...args) => {
+                    logs.push({ type: 'log', args: args.map(arg => 
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' ') });
+                };
+                
+                console.error = (...args) => {
+                    logs.push({ type: 'error', args: args.map(arg => 
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' ') });
+                };
+
+                try {
+                    // Execute the transformed code in a safe environment
+                    const wrappedCode = `
+                        (function() {
+                            // Make React hooks available globally
+                            const { useState, useEffect, useCallback, useMemo, useRef } = React;
+                            
+                            // Clear previous exports
+                            window.DefaultExport = null;
+                            
+                            ${transformed}
+                            
+                            // Try to render the component
+                            let ComponentToRender = null;
+                            
+                            // Check for default export
+                            if (window.DefaultExport) {
+                                ComponentToRender = window.DefaultExport;
+                            } 
+                            // Check for App variable
+                            else if (typeof App !== 'undefined') {
+                                ComponentToRender = App;
+                            }
+                            // Check for any function that looks like a component
+                            else {
+                                const possibleComponents = Object.keys(window).filter(key => 
+                                    typeof window[key] === 'function' && 
+                                    key[0] === key[0].toUpperCase() &&
+                                    key !== 'React' && key !== 'ReactDOM' && key !== 'DefaultExport'
+                                );
+                                if (possibleComponents.length > 0) {
+                                    ComponentToRender = window[possibleComponents[possibleComponents.length - 1]];
+                                }
+                            }
+                            
+                            if (ComponentToRender) {
+                                const root = ReactDOM.createRoot(container);
+                                root.render(React.createElement(ComponentToRender));
+                            } else {
+                                throw new Error('No component found to render. Make sure to export a component or define an App variable.');
+                            }
+                        })();
+                    `;
+                    
+                    eval(wrappedCode);
+                    
+                    // Show console logs if any
+                    if (logs.length > 0) {
+                        output.innerHTML = '<div class="success">Console Output:</div>' + 
+                            logs.map(log => `<div class="${log.type === 'error' ? 'error' : ''}">${escapeHtml(log.args)}</div>`).join('');
+                    }
+
+                } catch (runtimeError) {
+                    switchOutputTab('console');
+                    output.innerHTML = `<div class="error">Runtime Error:</div><div>${escapeHtml(runtimeError.message)}</div>`;
+                } finally {
+                    console.log = originalLog;
+                    console.error = originalError;
+                }
+
+            } catch (error) {
+                switchOutputTab('console');
+                output.innerHTML = `<div class="error">Compilation Error:</div><div>${escapeHtml(error.message)}</div>`;
+            }
+        }
+
+        function switchOutputTab(tab) {
+            currentOutputTab = tab;
+            
+            // Update tab appearance
+            document.querySelectorAll('.output-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[onclick="switchOutputTab('${tab}')"]`).classList.add('active');
+            
+            // Show/hide content
+            const consoleOutput = document.getElementById('consoleOutput');
+            const reactPreview = document.getElementById('reactPreview');
+            
+            if (tab === 'console') {
+                consoleOutput.classList.remove('hidden');
+                reactPreview.classList.add('hidden');
+            } else {
+                consoleOutput.classList.add('hidden');
+                reactPreview.classList.remove('hidden');
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                if (activeFile && activeFile.endsWith('.tsx')) {
+                    runReactCode();
+                } else {
+                    runCode();
+                }
+            }
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                showNewFileDialog();
+            }
+        });
+
+        // Handle Enter key in new file dialog
+        document.getElementById('newFileName').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                createNewFile();
+            }
+            if (e.key === 'Escape') {
+                hideNewFileDialog();
+            }
+        });
+    </script>
+</body>
+</html> 
