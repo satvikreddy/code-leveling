@@ -3,11 +3,7 @@ description:
 globs: 
 alwaysApply: true
 ---
-This repo is the best coding and tech guide.
-- Easy and simple to understand
-- Practical examples > jargon heavy theory
-- Understanding and seeing problem first, then learning the tool to solve it
-
-Primarily focuses on explaining concepts via typescript code example.
-
- 
+- nextjs 15 with app router
+- shadcn: components are in components/ui folder
+- always use shadcn components and tailwind
+- less code is good, readable code is good

@@ -1,8 +1,13 @@
 {
   "editor.formatOnSave": true,
-  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "workbench.colorCustomizations": {
     "titleBar.activeBackground": "#39003e",
     "titleBar.inactiveBackground": "#39003e"
+  },
+  "files.exclude": {
+    ".next": true,
+    "*.mjs": true,
+    "node_modules": true
   }
 }
