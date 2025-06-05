@@ -7,3 +7,9 @@ alwaysApply: true
 - shadcn: components are in components/ui folder
 - always use shadcn components and tailwind
 - less code is good, readable code is good
+
+Folder structure:
+- app: nextjs pages
+- components
+	- widgets: all app components
+	- ui: shadcn components
