@@ -1,5 +1,6 @@
 interface FileData {
   name: string;
   content: string;
-  language: string;
+  language: "typescript";
+  isExecutable?: boolean;
 }

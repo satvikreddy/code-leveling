@@ -1,7 +1,7 @@
-import IDE2 from "@/components/widgets/IDE2";
+import IDE3 from "@/components/widgets/IDE3";
 
 export default function IDEPage() {
-  return <IDE2 initialFiles={initialFiles} executableFile="main.ts" />;
+  return <IDE3 initialFiles={initialFiles} />;
 }
 
 const initialFiles: FileData[] = [
@@ -35,6 +35,7 @@ export class Calculator {
   },
   {
     name: "main.ts",
+    isExecutable: true,
     content: `import { greet, add, User, Calculator } from "./utils";
 
 // Right-click on 'greet', 'add', 'User', or 'Calculator' and select "Go to Definition"

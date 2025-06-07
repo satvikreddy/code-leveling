@@ -1,12 +1,6 @@
 import { create } from "zustand";
 import * as monaco from "monaco-editor";
 
-interface FileData {
-  name: string;
-  content: string;
-  language: string;
-}
-
 interface IDE2Store {
   // State
   files: FileData[];
@@ -269,5 +263,3 @@ export const useIDE2Store = create<IDE2Store>((set, get) => ({
     });
   },
 }));
-
-export type { FileData };

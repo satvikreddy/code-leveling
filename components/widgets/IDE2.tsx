@@ -2,7 +2,7 @@
 
 import Editor from "@monaco-editor/react";
 import { useEffect, useState } from "react";
-import { useIDE2Store, type FileData } from "./IDE2Store";
+import { useIDE2Store } from "./IDE2Store";
 import {
   ResizableHandle,
   ResizablePanel,
