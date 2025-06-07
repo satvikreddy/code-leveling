@@ -6,7 +6,15 @@ import useIDEStore from "@/components/widgets/IDEStore";
 import FileEditor from "@/components/widgets/FileEditor";
 
 function IDE3(props: { initialFiles: FileData[] }) {
-  const { files, activeFileName, init, setActiveFile } = useIDEStore();
+  const {
+    files,
+    activeFileName,
+    editorMounted,
+    init,
+    handleActiveFileChange,
+    handleEditorOnMount,
+    handleEditorOnChange,
+  } = useIDEStore();
 
   useEffect(() => {
     // Initialize files when component mounts
@@ -25,13 +33,21 @@ function IDE3(props: { initialFiles: FileData[] }) {
         <FileExplorer
           files={files}
           activeFileName={activeFileName}
-          onFileSelect={setActiveFile}
+          onFileSelect={(fileName) => {
+            if (editorMounted) {
+              handleActiveFileChange(fileName);
+            }
+          }}
         />
       </div>
 
       <div className="flex-1">
         {/* Editor */}
-        {activeFile && <FileEditor file={activeFile} onMount={() => {}} />}
+        <FileEditor
+          file={activeFile}
+          onMount={handleEditorOnMount}
+          onChange={handleEditorOnChange}
+        />
       </div>
     </div>
   );

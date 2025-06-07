@@ -2,21 +2,22 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Editor, OnMount } from "@monaco-editor/react";
+import { Editor, OnChange, OnMount } from "@monaco-editor/react";
 import React from "react";
 
 type Props = {
-  file: FileData;
+  file: FileData | undefined;
   onMount: OnMount;
+  onChange: OnChange;
 };
 
-const FileEditor = ({ file, onMount }: Props) => {
+const FileEditor = ({ file, onMount, onChange }: Props) => {
   return (
     <Card className="h-full flex flex-col rounded-none py-0 pt-6">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">{file.name}</CardTitle>
-          {file.isExecutable && (
+          <CardTitle className="text-lg">{file?.name}</CardTitle>
+          {file?.isExecutable && (
             <div className="flex gap-2">
               {/* <Button
                 onClick={executeCode}
@@ -34,9 +35,10 @@ const FileEditor = ({ file, onMount }: Props) => {
       <CardContent className="flex-1 p-0">
         <Editor
           height="100%"
-          language={file.language}
+          language={file?.language}
           theme="vs-dark"
           onMount={onMount}
+          onChange={onChange}
           options={{
             minimap: { enabled: true },
             fontSize: 14,
