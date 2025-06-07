@@ -8,6 +8,7 @@ interface IDEStore {
   editor: monaco.editor.IStandaloneCodeEditor;
   monaco: typeof monaco;
   editorMounted: boolean;
+  editorStates: Map<string, monaco.editor.ICodeEditorViewState>;
 
   init: (args: { files: FileData[]; activeFileName: string }) => void;
   handleActiveFileChange: (fileName: string) => void;
@@ -22,9 +23,17 @@ const useIDEStore = create<IDEStore>((set, get) => ({
   editor: null as any,
   monaco: null as any,
   editorMounted: false,
+  editorStates: new Map(),
 
   init: (args) => {
-    set({ files: args.files, activeFileName: args.activeFileName });
+    set({
+      files: args.files,
+      activeFileName: args.activeFileName,
+      editorMounted: false,
+      editor: null as any,
+      monaco: null as any,
+      editorStates: new Map(),
+    });
   },
   getModelForFile: (fileName) => {
     const { monaco } = get();
@@ -40,11 +49,33 @@ const useIDEStore = create<IDEStore>((set, get) => ({
     handleActiveFileChange(activeFileName);
   },
   handleActiveFileChange: (fileName) => {
+    const {
+      editor,
+      getModelForFile,
+      editorStates,
+      activeFileName: currentFileName,
+    } = get();
+    const currentViewState = editor.saveViewState()!;
+    editorStates.set(currentFileName, currentViewState);
+
     set({ activeFileName: fileName });
 
-    const { editor, monaco, getModelForFile } = get();
     const model = getModelForFile(fileName);
-    if (model) editor.setModel(model);
+    if (model) {
+      // Normally if we rename function in b.ts and then go to a.ts, a.ts does not show error
+      // This hack forces the editor to re-evaluate opened file
+      model.setValue(model.getValue());
+
+      editor.setModel(model);
+
+      const newFileViewState = editorStates.get(fileName);
+      if (newFileViewState) editor.restoreViewState(newFileViewState);
+
+      // wait for 50ms
+      setTimeout(() => {
+        editor.focus();
+      }, 50);
+    }
   },
   handleEditorOnChange: (value, event) => {
     // do nothing

@@ -13,10 +13,10 @@ type Props = {
 
 const FileEditor = ({ file, onMount, onChange }: Props) => {
   return (
-    <Card className="h-full flex flex-col rounded-none py-0 pt-6">
-      <CardHeader className="pb-3">
+    <Card className="h-full flex flex-col rounded-none p-0 gap-0">
+      <CardHeader className="py-3 px-6">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">{file?.name}</CardTitle>
+          <CardTitle className="text-md">{file?.name}</CardTitle>
           {file?.isExecutable && (
             <div className="flex gap-2">
               {/* <Button
@@ -40,7 +40,7 @@ const FileEditor = ({ file, onMount, onChange }: Props) => {
           onMount={onMount}
           onChange={onChange}
           options={{
-            minimap: { enabled: true },
+            minimap: { enabled: false },
             fontSize: 14,
             wordWrap: "on",
             automaticLayout: true,

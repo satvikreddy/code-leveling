@@ -146,14 +146,14 @@ function FileExplorer(props: {
   };
 
   return (
-    <div className="bg-card border-r border-gray-700 h-full">
-      <div className="p-3 border-b border-gray-700">
+    <div className="bg-card border-r border-gray-700 h-full flex flex-col">
+      <div className="py-3 px-6 border-b border-gray-700">
         <h3 className="text-sm font-medium text-gray-300 uppercase tracking-wide">
           Explorer
         </h3>
       </div>
-      <ScrollArea className="h-full">
-        <div className="py-2">{fileTree.map((node) => renderNode(node))}</div>
+      <ScrollArea className="flex-1">
+        <div className="pb-10">{fileTree.map((node) => renderNode(node))}</div>
       </ScrollArea>
     </div>
   );
