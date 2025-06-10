@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Code Leveling",
   description: "Level up by solving practical problems using TypeScript",
+  openGraph: {
+    title: "Code Leveling",
+    description: "no setop, no login, no paywall",
+    images: [{ url: "/og.png" }],
+  },
 };
 
 export default function RootLayout({
