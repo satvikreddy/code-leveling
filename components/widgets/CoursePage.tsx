@@ -11,7 +11,7 @@ type Props = {
 
 const CoursePage = ({ course }: Props) => {
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-card text-white">
       {/* Header */}
       <header className="border-b border-gray-800 px-6 py-4">
         <nav className="flex items-center justify-between max-w-7xl mx-auto">
@@ -21,31 +21,7 @@ const CoursePage = ({ course }: Props) => {
             </div>
           </div>
           <div className="flex items-center space-x-8">
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Levels
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Players
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Quests
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Guild
-            </a>
-            <div className="flex items-center space-x-4">
+            {/* <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 className="text-gray-300 hover:text-white"
@@ -55,7 +31,7 @@ const CoursePage = ({ course }: Props) => {
               <Button className="bg-green-600 hover:bg-green-700 text-white">
                 Start Quest
               </Button>
-            </div>
+            </div> */}
           </div>
         </nav>
       </header>
@@ -63,8 +39,8 @@ const CoursePage = ({ course }: Props) => {
       {/* Main Content */}
       <main className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
         {/* Left Side - Course Info */}
-        <div className="flex-1 px-6 py-12 flex flex-col justify-center max-w-2xl lg:max-w-2xl mx-auto lg:mx-0">
-          <div className="mb-8">
+        <div className="flex-1 px-6 md:px-12 py-6 flex flex-col justify-center max-w-2xl lg:max-w-2xl mx-auto lg:mx-0">
+          <div>
             <div className="inline-block px-3 py-1 bg-purple-900/50 border border-purple-700 rounded-full text-purple-300 text-xs font-mono mb-6">
               v0.0.1 EARLY ACCESS
             </div>
@@ -89,7 +65,7 @@ const CoursePage = ({ course }: Props) => {
             </div>
 
             <div className="flex items-center text-gray-400">
-              <div className="w-4 h-4 bg-green-400 rounded-full mr-2"></div>
+              <div className="w-3 h-3 bg-green-400 rounded-full mr-2 mt-1"></div>
               <span>created by ex-microsoft dev with 7+ years experience</span>
             </div>
           </div>
@@ -113,7 +89,7 @@ const CoursePage = ({ course }: Props) => {
               </div>
 
               {/* Terminal Content */}
-              <div className="p-6 font-mono text-sm">
+              <div className="p-6 font-mono text-sm relative">
                 <div className="text-green-400 mb-2">
                   Welcome to CodeLeveling
                 </div>
