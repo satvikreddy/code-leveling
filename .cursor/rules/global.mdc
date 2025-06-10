@@ -3,6 +3,8 @@ description:
 globs: 
 alwaysApply: true
 ---
+- pnpm
+
 - nextjs 15 with app router
 - shadcn: components are in components/ui folder
 - always use shadcn components and tailwind

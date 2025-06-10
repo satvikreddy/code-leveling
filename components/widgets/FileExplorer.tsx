@@ -131,7 +131,7 @@ function FileExplorer(props: {
         className={`flex items-center gap-2 py-1 px-2 hover:bg-gray-700/50 cursor-pointer text-sm ${
           isActive ? "bg-blue-600/30 text-white" : "text-gray-300"
         }`}
-        style={{ paddingLeft: `${depth * 12 + 24}px` }}
+        style={{ paddingLeft: `${depth * 12 + 8}px` }}
         // onClick={() => onFileSelect(node.fullPath!)}
         onPointerDown={() => onFileSelect(node.fullPath!)}
       >
