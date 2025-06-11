@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FileExplorer from "@/components/widgets/FileExplorer";
 import useIDEStore from "@/components/widgets/IDEStore";
 import FileEditor from "@/components/widgets/FileEditor";
@@ -18,6 +18,8 @@ export type IDEProps = {
 };
 
 function IDE(props: IDEProps) {
+  const [isDesktop, setIsDesktop] = useState(true);
+
   const {
     files,
     activeFileName,
@@ -36,7 +38,28 @@ function IDE(props: IDEProps) {
     });
   }, []);
 
+  useEffect(() => {
+    // Check screen size only on mount
+    setIsDesktop(window.innerWidth >= 1024); // lg breakpoint
+  }, []);
+
   const activeFile = files.find((file) => file.name === activeFileName);
+
+  // Show mobile message for small screens
+  if (!isDesktop) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-card p-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-foreground mb-4">
+            Use Desktop for Best Experience
+          </h2>
+          <p className="text-muted-foreground">
+            This IDE works best on larger screens.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-card select-none">

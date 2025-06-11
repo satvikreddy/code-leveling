@@ -69,7 +69,17 @@ const useIDEStore = create<IDEStore>((set, get) => ({
       editor.setModel(model);
 
       const newFileViewState = editorStates.get(fileName);
-      if (newFileViewState) editor.restoreViewState(newFileViewState);
+      if (newFileViewState) {
+        editor.restoreViewState(newFileViewState);
+      } else {
+        // First time opening this file - position cursor at the end
+        const lineCount = model.getLineCount();
+        const lastLineLength = model.getLineLength(lineCount);
+        editor.setPosition({
+          lineNumber: lineCount,
+          column: lastLineLength + 1,
+        });
+      }
 
       // wait for 50ms
       setTimeout(() => {
