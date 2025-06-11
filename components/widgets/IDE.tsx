@@ -11,7 +11,13 @@ import {
 } from "@/components/ui/resizable";
 import ContentBoard from "@/components/widgets/ContentBoard";
 
-function IDE(props: { initialFiles: FileData[] }) {
+export type IDEProps = {
+  initialFiles: FileData[];
+  markdown: string;
+  hideFileExplorer?: boolean;
+};
+
+function IDE(props: IDEProps) {
   const {
     files,
     activeFileName,
@@ -35,17 +41,19 @@ function IDE(props: { initialFiles: FileData[] }) {
   return (
     <div className="flex h-screen bg-card select-none">
       {/* File Explorer */}
-      <div className="w-56 bg-gray-800 border-r border-gray-700">
-        <FileExplorer
-          files={files}
-          activeFileName={activeFileName}
-          onFileSelect={(fileName) => {
-            if (editorMounted) {
-              handleActiveFileChange(fileName);
-            }
-          }}
-        />
-      </div>
+      {!props.hideFileExplorer && (
+        <div className="w-56 bg-gray-800 border-r border-gray-700">
+          <FileExplorer
+            files={files}
+            activeFileName={activeFileName}
+            onFileSelect={(fileName) => {
+              if (editorMounted) {
+                handleActiveFileChange(fileName);
+              }
+            }}
+          />
+        </div>
+      )}
 
       <div className="flex-1">
         <ResizablePanelGroup direction="horizontal" className="h-full w-full">
@@ -59,9 +67,9 @@ function IDE(props: { initialFiles: FileData[] }) {
           </ResizablePanel>
           <ResizableHandle withHandle />
           {/* Content Board */}
-          <ResizablePanel defaultSize={36} minSize={30} maxSize={48}>
+          <ResizablePanel defaultSize={48} minSize={40} maxSize={56}>
             <div className="h-full w-full border-l border-gray-700 bg-background">
-              <ContentBoard />
+              <ContentBoard markdown={props.markdown} />
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>

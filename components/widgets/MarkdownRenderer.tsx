@@ -7,6 +7,7 @@ import MermaidRenderer from "@/components/widgets/MermaidRenderer";
 
 type Props = {
   markdown: string;
+  onOpenFile?: (file: string) => void;
 };
 
 const MarkdownRenderer = (props: Props) => {
@@ -32,6 +33,31 @@ const MarkdownRenderer = (props: Props) => {
                 <code className={className} {...props}>
                   {children}
                 </code>
+              );
+            },
+            a({ href, children, ...linkProps }) {
+              // Check if the link looks like a file path
+              const isFilePath = href && href.match(/\.(tsx?|jsx?|md)$/i);
+
+              if (isFilePath) {
+                return (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      props.onOpenFile?.(href);
+                    }}
+                    className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer bg-transparent border-none p-0 font-inherit inline"
+                  >
+                    {children}
+                  </button>
+                );
+              }
+
+              return (
+                <a href={href} {...linkProps}>
+                  {children}
+                </a>
               );
             },
           }}

@@ -1,12 +1,10 @@
-import { ChestPlate } from "./item-chest-plate.class";
-import { ItemDbData } from "./item-db-data";
-import { Sword } from "./item-sword.class";
-import { Item } from "./item.class";
+import { ItemDbData } from "./item.dbData";
+import { Item, Sword, ChestPlate } from "./item.class";
 
-export function calculateTotalDefenseOfUser(rawItems: ItemDbData[]): number {
+function calculateTotalDefenseOfUser(userItems: ItemDbData[]): number {
   let totalDefense = 0;
 
-  for (const rawItem of rawItems) {
+  for (const rawItem of userItems) {
     let item: Item;
     if (rawItem.type === "chest-plate") {
       item = new ChestPlate();
@@ -22,10 +20,10 @@ export function calculateTotalDefenseOfUser(rawItems: ItemDbData[]): number {
   return totalDefense;
 }
 
-export function calculateTotalAttackOfUser(rawItems: ItemDbData[]): number {
+function calculateTotalAttackOfUser(userItems: ItemDbData[]): number {
   let totalAttack = 0;
 
-  for (const rawItem of rawItems) {
+  for (const rawItem of userItems) {
     let item: Item;
     if (rawItem.type === "chest-plate") {
       item = new ChestPlate();
@@ -40,3 +38,5 @@ export function calculateTotalAttackOfUser(rawItems: ItemDbData[]): number {
 
   return totalAttack;
 }
+
+export { calculateTotalDefenseOfUser, calculateTotalAttackOfUser };

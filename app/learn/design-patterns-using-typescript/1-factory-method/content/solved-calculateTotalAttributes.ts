@@ -1,5 +1,5 @@
-import { ItemDbData } from "./item-db-data";
-import { Item } from "./item.class";
+import { ItemDbData } from "./item.dbData";
+import { Item } from "./solved-item.class";
 
 export function calculateTotalDefenseOfUser(rawItems: ItemDbData[]): number {
   let totalDefense = 0;
