@@ -26,6 +26,7 @@ export default function LearnPage() {
       "✓ Observer Pattern - React to state changes",
       "... and more",
     ],
+    url: "/learn/design-patterns-using-typescript/1-factory-method",
   };
 
   return <CoursePage course={courseData} />;

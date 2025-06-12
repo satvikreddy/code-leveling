@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ReactMarkdown from "react-markdown";
 import React from "react";
 import MermaidRenderer from "@/components/widgets/MermaidRenderer";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   markdown: string;
@@ -51,6 +52,18 @@ const MarkdownRenderer = (props: Props) => {
                   >
                     {children}
                   </button>
+                );
+              }
+
+              if (typeof children === "string" && children.endsWith("→")) {
+                return (
+                  <Button
+                    onPointerDown={() => {
+                      window.location.href = href!;
+                    }}
+                  >
+                    {children}
+                  </Button>
                 );
               }
 

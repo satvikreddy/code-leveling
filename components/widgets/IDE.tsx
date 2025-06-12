@@ -80,7 +80,7 @@ function IDE(props: IDEProps) {
 
       <div className="flex-1">
         <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-          <ResizablePanel>
+          <ResizablePanel defaultSize={50}>
             {/* Editor */}
             <FileEditor
               file={activeFile}
@@ -90,7 +90,7 @@ function IDE(props: IDEProps) {
           </ResizablePanel>
           <ResizableHandle withHandle />
           {/* Content Board */}
-          <ResizablePanel defaultSize={48} minSize={40} maxSize={56}>
+          <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
             <div className="h-full w-full border-l border-gray-700 bg-background">
               <ContentBoard markdown={props.markdown} />
             </div>

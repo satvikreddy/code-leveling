@@ -1,11 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type Props = {
   course: {
     title: string;
     description: string;
     courseIndex: string[];
+    url: string;
   };
 };
 
@@ -17,7 +19,7 @@ const CoursePage = ({ course }: Props) => {
         <nav className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center space-x-2">
             <div className="text-green-400 font-mono text-xl font-bold">
-              &lt;/&gt; CodeLeveling
+              &lt;/&gt; CodeLevelUp
             </div>
           </div>
           <div className="flex items-center space-x-8">
@@ -37,7 +39,7 @@ const CoursePage = ({ course }: Props) => {
       </header>
 
       {/* Main Content */}
-      <main className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
+      <main className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)] max-w-7xl mx-auto">
         {/* Left Side - Course Info */}
         <div className="flex-1 px-6 md:px-12 py-6 flex flex-col justify-center max-w-2xl lg:max-w-2xl mx-auto lg:mx-0">
           <div>
@@ -59,8 +61,11 @@ const CoursePage = ({ course }: Props) => {
             </p>
 
             <div className="flex space-x-4 mb-8">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
-                Start Leveling →
+              <Button
+                asChild
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg"
+              >
+                <a href={course.url}>Start Leveling →</a>
               </Button>
             </div>
 
@@ -83,7 +88,7 @@ const CoursePage = ({ course }: Props) => {
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                 </div>
                 <div className="text-gray-300 text-sm font-mono">
-                  code-leveling
+                  code-level-up
                 </div>
                 <div className="text-gray-400 text-sm">bash</div>
               </div>
@@ -91,17 +96,17 @@ const CoursePage = ({ course }: Props) => {
               {/* Terminal Content */}
               <div className="p-6 font-mono text-sm relative">
                 <div className="text-green-400 mb-2">
-                  Welcome to CodeLeveling
+                  Welcome to CodeLevelUp
                 </div>
                 <div className="text-gray-400 mb-4">
-                  Inspired by sung jin-woo's solo leveling journey
+                  The right way to level up your coding skills
                 </div>
 
                 <div className="mt-4 text-purple-400">
                   <div>🚀 Why CodeLeveling?</div>
                   <div className="text-gray-300 mt-2 space-y-1">
-                    <div>• Practical real-world examples</div>
-                    <div>• Derive solution from problem</div>
+                    <div>• Practical real-world examples.</div>
+                    <div>• Derive solution from problem.</div>
                     <div>• No setup. Works in browser.</div>
                     <div>• Free. No login. No paywall. </div>
                   </div>
