@@ -1,4 +1,4 @@
-import { Theme } from "./theme.class";
+import { Theme } from "./solved-theme.class";
 
 const defaultTheme = new Theme({
   background: "#ffffff",
