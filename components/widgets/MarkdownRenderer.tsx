@@ -38,7 +38,10 @@ const MarkdownRenderer = (props: Props) => {
             },
             a({ href, children, ...linkProps }) {
               // Check if the link looks like a file path
-              const isFilePath = href && href.match(/\.(tsx?|jsx?|md)$/i);
+              const isFilePath =
+                href &&
+                href.match(/\.(tsx?|jsx?|md)$/i) &&
+                !href.startsWith("https://");
 
               if (isFilePath) {
                 return (
