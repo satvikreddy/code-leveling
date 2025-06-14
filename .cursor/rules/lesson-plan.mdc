@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Lesson creation guidelines: [lesson.md](mdc:docs/lesson.md)
+
+For reference, the builder pattern lesson readme: [readme.md](mdc:app/learn/design-patterns-using-typescript/2-builder/content/readme.md)
+
+When asked to come up with a plan for a new pattern:
+- Mention the real world example
+- Explain what code example you'll come up with (no need to write code, just explain)

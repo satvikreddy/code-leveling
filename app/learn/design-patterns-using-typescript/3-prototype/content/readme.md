@@ -1,6 +1,6 @@
 ## Intro
 
-We're building an app that supports multiple UI themes (light, dark, high-contrast, etc.). Each theme has several properties.
+We're building an app that supports multiple UI themes (light, dark, high-contrast, etc). Each theme has several properties.
 
 - [theme.class.ts](theme.class.ts): implementation of the theme class
 - [usage.ts](usage.ts): how we create multiple themes
