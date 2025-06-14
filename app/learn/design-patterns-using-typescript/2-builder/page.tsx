@@ -1,3 +1,15 @@
+import IDE, { IDEProps } from "@/components/widgets/IDE";
+import { lessonGetStaticFileData } from "@/utils/course.util";
+
+async function getStaticFileData(): Promise<IDEProps> {
+  return lessonGetStaticFileData({
+    courseId: "design-patterns-using-typescript",
+    lessonId: "2-builder",
+  });
+}
+
 export default async function Page() {
-  return <div>Coming Soon</div>;
+  const props = await getStaticFileData();
+
+  return <IDE {...props} />;
 }

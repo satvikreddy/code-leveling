@@ -68,7 +68,7 @@ const MarkdownRenderer = (props: Props) => {
               }
 
               return (
-                <a href={href} {...linkProps}>
+                <a href={href} target="_blank" {...linkProps}>
                   {children}
                 </a>
               );
