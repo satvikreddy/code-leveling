@@ -1,11 +1,10 @@
-"use server";
-
 export class SlackService {
   static async sendMessage(text: string): Promise<void> {
     const slackChannel = process.env.SLACK_CHANNEL;
 
     if (!slackChannel) {
       // Ignore if SLACK_CHANNEL is not configured
+      console.log(text);
       return;
     }
 
