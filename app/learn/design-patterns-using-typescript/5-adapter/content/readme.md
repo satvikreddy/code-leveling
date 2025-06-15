@@ -30,4 +30,4 @@ Note: In practice, you would never build your own ORM. This was just to demonstr
 
 🌱 Lesson Complete!
 
-[Next pattern: Coming soon →]()
+More patterns: Coming soon

@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { logPageView } from "@/services/analytics.service";
 
 const REF_KEY = "ref";
 
-export default function PageAnalytics() {
+function PageAnalyticsInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -34,4 +34,12 @@ export default function PageAnalytics() {
 
   // This component does not render anything visible
   return null;
+}
+
+export default function PageAnalytics() {
+  return (
+    <Suspense fallback={null}>
+      <PageAnalyticsInner />
+    </Suspense>
+  );
 }
