@@ -24,6 +24,8 @@ It is like constructing an object - brick by brick. We can do the same for our s
 - [builder-usage.ts](builder-usage.ts) – the same examples with the builder
 - [schema-builder.ts](schema-builder.ts) – implementation of the builder
 
+The implementation might look confusing but the benefit is the simplicity in usage, which will be far more frequent.
+
 ## Compare
 
 [usage.ts](usage.ts) vs [builder-usage.ts](builder-usage.ts)

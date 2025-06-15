@@ -11,7 +11,7 @@ Consider an rpg game where users complete tasks to win items that increase the a
 There are 2 problems in calculateTotalAttributes.ts:
 
 - code duplication: converting raw data to the right Item class
-- responsibility: the implemenation of converting data to Item is not responsibility of calulateTotalAttributes
+- responsibility: the implementation of converting data to Item is not responsibility of calculateTotalAttributes
 
 When a new item type is added, it is very easy for dev to forget to add cases in all places.
 

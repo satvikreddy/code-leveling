@@ -15,7 +15,7 @@ We have [database-adapter.ts](database-adapter.ts) interface with specific adapt
 - [postgress-adapter.ts](postgress-adapter.ts)
 - [mysql-adapter.ts](mysql-adapter.ts)
 
-The differences in packages and query syntax are hidden inside the adapters.
+The differences in packages and query syntax are inside the specific adapters.
 
 ## Usage
 

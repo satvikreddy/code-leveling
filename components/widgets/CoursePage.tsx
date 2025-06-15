@@ -99,11 +99,11 @@ const CoursePage = ({ course }: Props) => {
                   Welcome to CodeLevelUp
                 </div>
                 <div className="text-gray-400 mb-4">
-                  The right way to level up your coding skills
+                  The simplest way to level up your coding skills
                 </div>
 
                 <div className="mt-4 text-purple-400">
-                  <div>🚀 Why CodeLeveling?</div>
+                  <div>🚀 Why CodeLevelUp?</div>
                   <div className="text-gray-300 mt-2 space-y-1">
                     <div>• Practical real-world examples.</div>
                     <div>• Derive solution from problem.</div>
